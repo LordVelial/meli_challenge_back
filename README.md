@@ -78,6 +78,7 @@ OWNED BY challenge.tbl_event.id;
 --------------------------------------------------
 
 -- datos de pais
+
 INSERT INTO challenge.tbl_country(description) VALUES ('argentina');
 INSERT INTO challenge.tbl_country(description) VALUES ('brasil');
 INSERT INTO challenge.tbl_country(description) VALUES ('colombia');

@@ -29,27 +29,33 @@ CREATE SCHEMA challenge
 --------------------------------------------------
 
 CREATE SEQUENCE challenge.tbl_country_id_seq;
+
 CREATE TABLE challenge.tbl_country
 (
     id integer NOT NULL DEFAULT nextval('challenge.tbl_country_id_seq'),
     description character varying(50),
     PRIMARY KEY (id)
 );
+
 ALTER SEQUENCE challenge.tbl_country_id_seq
 OWNED BY challenge.tbl_country.id;
 
+
 CREATE SEQUENCE challenge.tbl_type_id_seq;
+
 CREATE TABLE challenge.tbl_type
 (
     id integer NOT NULL DEFAULT nextval('challenge.tbl_type_id_seq'),
     description character varying(50),
     PRIMARY KEY (id)
 );
+
 ALTER SEQUENCE challenge.tbl_type_id_seq
 OWNED BY challenge.tbl_type.id;
 
 
 CREATE SEQUENCE challenge.tbl_event_id_seq;
+
 CREATE TABLE challenge.tbl_event
 (
     id integer NOT NULL DEFAULT nextval('challenge.tbl_event_id_seq'),
@@ -94,9 +100,11 @@ INSERT INTO challenge.tbl_type(description) VALUES ('alerta');
 --              ejecutar proyecto               --
 --------------------------------------------------
 Para ejecutar el proyecto de manera local, es importante utilizar la estructura del siguiente comando:
+
   go run cmd/main.go db_name db_password db_username db_host db_port
 
 Ejemplo de uso: 
+
   go run cmd/main.go meli mipassword postgres localhost 5432
 
 
@@ -107,15 +115,25 @@ Ejemplo de uso:
      Esto descargará automáticamente todas las dependencias especificadas en el archivo go.mod.
      
   -  En el directorio "postman_collection", encontrarás una colección de Postman que podrás utilizar para probar las diferentes funcionalidades del API. 
+
       1- get events all
+
       2 - get all filtered events
+
       3 - get events by description
+
       4- get events by countries
+
       5- get events by type
+
       6- get top-countries
+
       7- get countries
+
       8- get types
+
       9- set event
+
      
 
 

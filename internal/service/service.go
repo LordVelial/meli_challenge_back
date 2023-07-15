@@ -38,20 +38,40 @@ func GetEvents(w http.ResponseWriter, r *http.Request, cfgDb entity.DataBase) {
 
 	var events []entity.EventResponse
 	var err error
+	whereQuery := ""
+	hasWhere := true
 
 	if description != "" {
 		// Filtra los eventos por descripción
-		events, err = db.ListEventsByDescription(description, page, pageSize, cfgDb)
-	} else if country != "" {
-		// Filtra los eventos por país
-		events, err = db.ListEventsByCountry(country, page, pageSize, cfgDb)
-	} else if typeEvent != "" {
-		// Filtra los eventos por tipo
-		events, err = db.ListEventsByType(typeEvent, page, pageSize, cfgDb)
-	} else {
-		// No hay filtros aplicados, devuelve todos los eventos
-		events, err = db.ListEvents(page, pageSize, cfgDb)
+		if hasWhere {
+			whereQuery += " where "
+			hasWhere = false
+		}
+		whereQuery += db.ListEventsByDescription(description, page, pageSize, cfgDb)
 	}
+	if country != "" {
+		// Filtra los eventos por país
+		if hasWhere {
+			whereQuery += " where "
+			hasWhere = false
+		} else {
+			whereQuery += " and "
+		}
+
+		whereQuery += db.ListEventsByCountry(country, page, pageSize, cfgDb)
+	}
+	if typeEvent != "" {
+		// Filtra los eventos por tipo
+		if hasWhere {
+			whereQuery += " where "
+			hasWhere = false
+		} else {
+			whereQuery += " and "
+		}
+		whereQuery += db.ListEventsByType(typeEvent, page, pageSize, cfgDb)
+	}
+
+	events, err = db.ListEvents(whereQuery, page, pageSize, cfgDb)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

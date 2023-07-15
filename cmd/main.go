@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -44,5 +45,11 @@ func main() {
 		handler.GetTopCountriesMetrics(w, r, cfgDb)
 	}).Methods(http.MethodGet)
 
-	log.Fatal(http.ListenAndServe(":8000", router))
+	// Crear un manejador CORS
+	c := cors.Default()
+
+	// Envolver el enrutador con el manejador CORS
+	handler := c.Handler(router)
+
+	log.Fatal(http.ListenAndServe(":8000", handler))
 }

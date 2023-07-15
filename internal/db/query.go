@@ -59,35 +59,26 @@ func ListEventsWithQuery(query string, cfgDb entity.DataBase, args ...interface{
 }
 
 // Función para listar todos los eventos de manera paginada
-func ListEvents(page, pageSize string, cfgDb entity.DataBase) ([]entity.EventResponse, error) {
-	query := fmt.Sprintf("%s ORDER BY created_at LIMIT %s OFFSET %s", selectEventsQuery,
+func ListEvents(queryEvent, page, pageSize string, cfgDb entity.DataBase) ([]entity.EventResponse, error) {
+	query := fmt.Sprintf("%s ORDER BY ev.id desc LIMIT %s OFFSET %s", (selectEventsQuery + queryEvent),
 		pageSize, calculateOffset(page, pageSize))
 
 	return ListEventsWithQuery(query, cfgDb)
 }
 
-// Función para listar eventos por país de manera paginada
-func ListEventsByCountry(country, page, pageSize string, cfgDb entity.DataBase) ([]entity.EventResponse, error) {
-	query := fmt.Sprintf("%s WHERE co.description LIKE $1 ORDER BY created_at LIMIT %s OFFSET %s", selectEventsQuery,
-		pageSize, calculateOffset(page, pageSize))
-
-	return ListEventsWithQuery(query, cfgDb, "%"+country+"%")
+// Función para listar eventos por país
+func ListEventsByCountry(country, page, pageSize string, cfgDb entity.DataBase) string {
+	return " co.description LIKE '%" + country + "%' "
 }
 
-// Función para listar eventos por typo de manera paginada
-func ListEventsByType(typeEvent, page, pageSize string, cfgDb entity.DataBase) ([]entity.EventResponse, error) {
-	query := fmt.Sprintf("%s WHERE tp.description LIKE $1 ORDER BY created_at LIMIT %s OFFSET %s", selectEventsQuery,
-		pageSize, calculateOffset(page, pageSize))
-
-	return ListEventsWithQuery(query, cfgDb, "%"+typeEvent+"%")
+// Función para listar eventos por tipo
+func ListEventsByType(typeEvent, page, pageSize string, cfgDb entity.DataBase) string {
+	return " tp.description LIKE '%" + typeEvent + "%' "
 }
 
-// Función para listar  eventos por tipo de evento de manera paginada
-func ListEventsByDescription(description, page, pageSize string, cfgDb entity.DataBase) ([]entity.EventResponse, error) {
-	query := fmt.Sprintf("%s WHERE ev.description LIKE $1 ORDER BY created_at LIMIT %s OFFSET %s", selectEventsQuery,
-		pageSize, calculateOffset(page, pageSize))
-
-	return ListEventsWithQuery(query, cfgDb, "%"+description+"%")
+// Función para listar  eventos por tipo de evento
+func ListEventsByDescription(description, page, pageSize string, cfgDb entity.DataBase) string {
+	return " ev.description LIKE '%" + description + "%' "
 }
 
 // Obtener la lista de países desde la base de datos
